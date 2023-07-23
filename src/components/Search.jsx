@@ -1,40 +1,37 @@
-import React,{useState,useEffect} from 'react'
-import MasonryLayout from './MasonryLayout'
-import { client } from '../client'
-import { feedQuery,searchQuery } from '../utils/data'
-import { AiOutlineLoading } from 'react-icons/ai'
-import Spinner from './Spinner'
-const Search = ({searchTerm}) => {
-  const [pins,setPins] = useState(null);
-  const [loading,setLoading] = useState(false);
-  useEffect(()=>{
-    if(searchTerm){
+import React, { useState, useEffect } from "react";
+import MasonryLayout from "./MasonryLayout";
+import { client } from "../client";
+import { feedQuery, searchQuery } from "../utils/data";
+import { AiOutlineLoading } from "react-icons/ai";
+import Spinner from "./Spinner";
+const Search = ({ searchTerm }) => {
+  const [pins, setPins] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (searchTerm) {
       setLoading(true);
-      const query = searchQuery(searchTerm.toLowerCase())
+      const query = searchQuery(searchTerm.toLowerCase());
 
-      client.fetch(query)
-      .then((data)=>{
+      client.fetch(query).then((data) => {
         setPins(data);
         setLoading(false);
-      })
-    }
-    else{
-      client.fetch(feedQuery)
-      .then((data)=>{
+      });
+    } else {
+      client.fetch(feedQuery).then((data) => {
         setPins(data);
         setLoading(false);
-      })
+      });
     }
-  },[searchTerm]);
+  }, [searchTerm]);
   return (
     <div>
-      {loading && <Spinner message='Searching for pins'/>}
-      {pins?.length !== 0 && <MasonryLayout pins={pins}/>}
-      {pins?.length === 0 && searchTerm !=='' && !loading && (
-        <div className='mt-10 text-center text-xl'>No pins found</div>
+      {loading && <Spinner message="Searching for pins" />}
+      {pins?.length !== 0 && <MasonryLayout pins={pins} />}
+      {pins?.length === 0 && searchTerm !== "" && !loading && (
+        <div className="mt-10 text-center text-xl">No pins found</div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
